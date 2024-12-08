@@ -1,36 +1,3 @@
-// const express = require('express');
-// const multer = require('multer');
-// const Audio = require('../models/Audio'); // Import the model
-// const router = express.Router();
-
-// // Configure multer for file uploads
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage });
-
-// // POST route to upload audio
-// router.post('/upload', upload.single('audio'), async (req, res) => {
-//     try {
-//         const { originalname, mimetype, buffer } = req.file;
-
-//         // Save the audio file to MongoDB
-//         const audio = new Audio({
-//             filename: originalname,
-//             contentType: mimetype,
-//             data: buffer,
-//         });
-
-//         await audio.save();
-
-//         res.status(200).json({ message: 'Audio uploaded successfully', audioId: audio._id });
-//     } catch (error) {
-//         console.error('Error saving audio:', error);
-//         res.status(500).json({ error: 'Failed to upload audio' });
-//     }
-// });
-
-// module.exports = router;
-
-
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
