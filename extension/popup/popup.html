@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Summarizer</title>
+    <link rel="stylesheet" href="./popup.css">
+</head>
+<body>
+    
+    <div id="login">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button id="loginBtn">Login</button>
+        <p>Don't have an account? <a href="#" id="showRegister">Register here</a></p>
+    </div>
+    <div id="register" style="display:none;">
+        <h2>Register</h2>
+        <input type="text" id="regUsername" placeholder="Username" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+        <button id="registerBtn">Register</button>
+        <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+    </div>
+
+    <div id="tracker" style="display: none;">
+        <h1>Audio Summarizer</h1>
+        <button id="logoutBtn">Logout</button>
+        <button id="start">Start Listening</button>
+        <button id="stop">Stop Listening</button>
+        <p id="status">Status: Idle</p>
+        <ul id="audio-list"></ul>
+    </div>
+
+    <script src="./popup.js"></script>
+</body>
+</html>

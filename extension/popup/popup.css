@@ -1,0 +1,37 @@
+/* body {
+    font-family: Arial, sans-serif;
+    width: 300px;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+form {
+    margin: 15px 0;
+}
+
+input {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#auth-container, #register-container, #controls-container {
+    display: none;
+} */

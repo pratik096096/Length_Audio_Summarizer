@@ -1,0 +1,125 @@
+// let mediaRecorder;
+// let audioChunks = [];
+// let isRecording = false;
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const loginForm = document.getElementById('loginForm');
+//   const recordingPanel = document.getElementById('recordingPanel');
+//   const loginBtn = document.getElementById('loginBtn');
+//   const registerBtn = document.getElementById('registerBtn');
+//   const startRecordingBtn = document.getElementById('startRecording');
+//   const stopRecordingBtn = document.getElementById('stopRecording');
+//   const logoutBtn = document.getElementById('logout');
+//   const audioDisplay = document.getElementById('audioDisplay');
+//   const summaryDisplay = document.getElementById('summaryDisplay');
+
+//   // Check login status
+//   chrome.storage.local.get(['isLoggedIn'], (result) => {
+//     if (result.isLoggedIn) {
+//       loginForm.style.display = 'none';
+//       recordingPanel.style.display = 'block';
+//     } else {
+//       loginForm.style.display = 'block';
+//       recordingPanel.style.display = 'none';
+//     }
+//   });
+
+//   // Login functionality
+//   loginBtn.addEventListener('click', () => {
+//     const email = document.getElementById('email').value;
+//     const password = document.getElementById('password').value;
+    
+//     // Implement your authentication logic here
+//     // For this example, we'll use a simple simulation
+//     if (email && password) {
+//       chrome.storage.local.set({isLoggedIn: true}, () => {
+//         loginForm.style.display = 'none';
+//         recordingPanel.style.display = 'block';
+//       });
+//     }
+//   });
+
+//   // Register functionality
+//   registerBtn.addEventListener('click', () => {
+//     const email = document.getElementById('email').value;
+//     const password = document.getElementById('password').value;
+    
+//     // Implement your registration logic here
+//     // For this example, we'll use a simple simulation
+//     if (email && password) {
+//       chrome.storage.local.set({isLoggedIn: true}, () => {
+//         loginForm.style.display = 'none';
+//         recordingPanel.style.display = 'block';
+//       });
+//     }
+//   });
+
+//   // Start Recording
+//   startRecordingBtn.addEventListener('click', async () => {
+//     try {
+//       const stream = await navigator.mediaDevices.getDisplayMedia({
+//         audio: true,
+//         video: false
+//       });
+
+//       mediaRecorder = new MediaRecorder(stream);
+//       audioChunks = [];
+
+//       mediaRecorder.ondataavailable = (event) => {
+//         audioChunks.push(event.data);
+//       };
+
+//       mediaRecorder.onstop = async () => {
+//         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+//         const audioUrl = URL.createObjectURL(audioBlob);
+        
+//         // Display audio
+//         const audioElement = document.createElement('audio');
+//         audioElement.src = audioUrl;
+//         audioElement.controls = true;
+//         audioDisplay.innerHTML = '';
+//         audioDisplay.appendChild(audioElement);
+
+//         // Summarize audio (mock Gemini API call)
+//         try {
+//           const summary = await summarizeAudio(audioBlob);
+//           summaryDisplay.textContent = summary;
+//         } catch (error) {
+//           summaryDisplay.textContent = 'Failed to generate summary';
+//         }
+//       };
+
+//       mediaRecorder.start();
+//       startRecordingBtn.disabled = true;
+//       stopRecordingBtn.disabled = false;
+//       isRecording = true;
+//     } catch (error) {
+//       console.error('Error starting recording:', error);
+//     }
+//   });
+
+//   // Stop Recording
+//   stopRecordingBtn.addEventListener('click', () => {
+//     if (mediaRecorder && isRecording) {
+//       mediaRecorder.stop();
+//       startRecordingBtn.disabled = false;
+//       stopRecordingBtn.disabled = true;
+//       isRecording = false;
+//     }
+//   });
+
+//   // Logout
+//   logoutBtn.addEventListener('click', () => {
+//     chrome.storage.local.set({isLoggedIn: false}, () => {
+//       loginForm.style.display = 'block';
+//       recordingPanel.style.display = 'none';
+//     });
+//   });
+
+//   // Mock function for audio summarization
+//   async function summarizeAudio(audioBlob) {
+//     // In a real implementation, you'd send this to Gemini API
+//     // This is a placeholder
+//     return "Audio summary would be generated here using Gemini API.";
+//   }
+// });
