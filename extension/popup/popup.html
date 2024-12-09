@@ -28,8 +28,25 @@
         <button id="logoutBtn">Logout</button>
         <button id="start">Start Listening</button>
         <button id="stop">Stop Listening</button>
+        <button id="viewAudios">View Recordings</button>
         <p id="status">Status: Idle</p>
         <ul id="audio-list"></ul>
+    </div>
+
+    <div id="audioRecordings" style="display: none;">
+        <h2>Your Audio Recordings</h2>
+        <button id="backToTracker">Back</button>
+        <div id="recordingsList"></div>
+    </div>
+
+    <div id="audioDetails" style="display: none;">
+        <h2>Audio Details</h2>
+        <button id="backToRecordings">Back</button>
+        <div id="audioDetailsContent">
+            <audio id="audioPlayer" controls></audio>
+            <button id="summarizeBtn">Summarize</button>
+            <div id="summaryContent"></div>
+        </div>
     </div>
 
     <script src="./popup.js"></script>

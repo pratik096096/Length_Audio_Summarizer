@@ -1,125 +1,105 @@
-// let mediaRecorder;
-// let audioChunks = [];
-// let isRecording = false;
+// // Configuration
+// const BASE_URL = 'http://localhost:5000/api'; // Your backend URL
+// const GEMINI_API_KEY = 'AIzaSyC1HcH5MF2F8L10nmpBH2f6hYwb1ME8FL8';
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   const loginForm = document.getElementById('loginForm');
-//   const recordingPanel = document.getElementById('recordingPanel');
-//   const loginBtn = document.getElementById('loginBtn');
-//   const registerBtn = document.getElementById('registerBtn');
-//   const startRecordingBtn = document.getElementById('startRecording');
-//   const stopRecordingBtn = document.getElementById('stopRecording');
-//   const logoutBtn = document.getElementById('logout');
-//   const audioDisplay = document.getElementById('audioDisplay');
-//   const summaryDisplay = document.getElementById('summaryDisplay');
+// // Authentication State Management
+// let currentUser = null;
+// let authToken = null;
 
-//   // Check login status
-//   chrome.storage.local.get(['isLoggedIn'], (result) => {
-//     if (result.isLoggedIn) {
-//       loginForm.style.display = 'none';
-//       recordingPanel.style.display = 'block';
-//     } else {
-//       loginForm.style.display = 'block';
-//       recordingPanel.style.display = 'none';
-//     }
-//   });
+// // DOM Elements
+// const loginSection = document.getElementById('login');
+// const registerSection = document.getElementById('register');
+// const trackerSection = document.getElementById('tracker');
+// const audioRecordingsSection = document.getElementById('audioRecordings');
+// const audioDetailsSection = document.getElementById('audioDetails');
+// const recordingsList = document.getElementById('recordingsList');
+// const audioPlayer = document.getElementById('audioPlayer');
+// const summaryContent = document.getElementById('summaryContent');
 
-//   // Login functionality
-//   loginBtn.addEventListener('click', () => {
-//     const email = document.getElementById('email').value;
-//     const password = document.getElementById('password').value;
-    
-//     // Implement your authentication logic here
-//     // For this example, we'll use a simple simulation
-//     if (email && password) {
-//       chrome.storage.local.set({isLoggedIn: true}, () => {
-//         loginForm.style.display = 'none';
-//         recordingPanel.style.display = 'block';
-//       });
-//     }
-//   });
-
-//   // Register functionality
-//   registerBtn.addEventListener('click', () => {
-//     const email = document.getElementById('email').value;
-//     const password = document.getElementById('password').value;
-    
-//     // Implement your registration logic here
-//     // For this example, we'll use a simple simulation
-//     if (email && password) {
-//       chrome.storage.local.set({isLoggedIn: true}, () => {
-//         loginForm.style.display = 'none';
-//         recordingPanel.style.display = 'block';
-//       });
-//     }
-//   });
-
-//   // Start Recording
-//   startRecordingBtn.addEventListener('click', async () => {
-//     try {
-//       const stream = await navigator.mediaDevices.getDisplayMedia({
-//         audio: true,
-//         video: false
-//       });
-
-//       mediaRecorder = new MediaRecorder(stream);
-//       audioChunks = [];
-
-//       mediaRecorder.ondataavailable = (event) => {
-//         audioChunks.push(event.data);
-//       };
-
-//       mediaRecorder.onstop = async () => {
-//         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-//         const audioUrl = URL.createObjectURL(audioBlob);
-        
-//         // Display audio
-//         const audioElement = document.createElement('audio');
-//         audioElement.src = audioUrl;
-//         audioElement.controls = true;
-//         audioDisplay.innerHTML = '';
-//         audioDisplay.appendChild(audioElement);
-
-//         // Summarize audio (mock Gemini API call)
-//         try {
-//           const summary = await summarizeAudio(audioBlob);
-//           summaryDisplay.textContent = summary;
-//         } catch (error) {
-//           summaryDisplay.textContent = 'Failed to generate summary';
-//         }
-//       };
-
-//       mediaRecorder.start();
-//       startRecordingBtn.disabled = true;
-//       stopRecordingBtn.disabled = false;
-//       isRecording = true;
-//     } catch (error) {
-//       console.error('Error starting recording:', error);
-//     }
-//   });
-
-//   // Stop Recording
-//   stopRecordingBtn.addEventListener('click', () => {
-//     if (mediaRecorder && isRecording) {
-//       mediaRecorder.stop();
-//       startRecordingBtn.disabled = false;
-//       stopRecordingBtn.disabled = true;
-//       isRecording = false;
-//     }
-//   });
-
-//   // Logout
-//   logoutBtn.addEventListener('click', () => {
-//     chrome.storage.local.set({isLoggedIn: false}, () => {
-//       loginForm.style.display = 'block';
-//       recordingPanel.style.display = 'none';
-//     });
-//   });
-
-//   // Mock function for audio summarization
-//   async function summarizeAudio(audioBlob) {
-//     // In a real implementation, you'd send this to Gemini API
-//     // This is a placeholder
-//     return "Audio summary would be generated here using Gemini API.";
-//   }
+// // Event Listeners for Navigation
+// document.getElementById('viewAudios').addEventListener('click', fetchUserRecordings);
+// document.getElementById('backToTracker').addEventListener('click', () => {
+//     audioRecordingsSection.style.display = 'none';
+//     trackerSection.style.display = 'block';
 // });
+// document.getElementById('backToRecordings').addEventListener('click', () => {
+//     audioDetailsSection.style.display = 'none';
+//     audioRecordingsSection.style.display = 'block';
+// });
+// document.getElementById('summarizeBtn').addEventListener('click', summarizeAudio);
+
+// async function fetchUserRecordings() {
+//     try {
+//         const response = await fetch(`http://localhost:5000/api/audio/recordings`, {
+//             headers: {
+//                 'Authorization': `Bearer ${authToken}`
+//             }
+//         });
+//         const recordings = await response.json();
+        
+//         recordingsList.innerHTML = ''; // Clear previous list
+//         recordings.forEach(recording => {
+//             const recordingElement = document.createElement('div');
+//             recordingElement.innerHTML = `
+//                 <p>Recording: ${recording.originalName}</p>
+//                 <button class="view-audio" data-id="${recording._id}">View Details</button>
+//             `;
+//             recordingsList.appendChild(recordingElement);
+//         });
+
+//         // Add event listeners to view audio buttons
+//         recordingsList.querySelectorAll('.view-audio').forEach(btn => {
+//             btn.addEventListener('click', (e) => viewAudioDetails(e.target.dataset.id));
+//         });
+
+//         trackerSection.style.display = 'none';
+//         audioRecordingsSection.style.display = 'block';
+//     } catch (error) {
+//         console.error('Error fetching recordings:', error);
+//         alert('Failed to fetch recordings');
+//     }
+// }
+
+// async function viewAudioDetails(audioId) {
+//     try {
+//         const response = await fetch(`${BASE_URL}/audio/${audioId}`, {
+//             headers: {
+//                 'Authorization': `Bearer ${authToken}`
+//             }
+//         });
+//         const audioData = await response.json();
+
+//         audioPlayer.src = audioData.path;
+//         audioPlayer.style.display = 'block';
+
+//         audioRecordingsSection.style.display = 'none';
+//         audioDetailsSection.style.display = 'block';
+//     } catch (error) {
+//         console.error('Error fetching audio details:', error);
+//         alert('Failed to load audio details');
+//     }
+// }
+
+// async function summarizeAudio() {
+//     try {
+//         const response = await fetch(`${BASE_URL}/audio/summarize`, {
+//             method: 'POST',
+//             headers: {
+//                 'Authorization': `Bearer ${authToken}`,
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 audioId: currentAudioId,
+//                 apiKey: GEMINI_API_KEY
+//             })
+//         });
+
+//         const summary = await response.json();
+//         summaryContent.textContent = summary.text;
+//     } catch (error) {
+//         console.error('Summarization error:', error);
+//         alert('Failed to generate summary');
+//     }
+// }
+
+// // Existing login/registration logic remains the same...

@@ -1,230 +1,8 @@
-// document.getElementById('loginBtn').addEventListener('click', () => {
-//     const username = document.getElementById('username').value;
-//     const password = document.getElementById('password').value;
-
-//     fetch('http://localhost:5000/api/auth/login', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ username, password })
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         if (data.token) {
-//             chrome.storage.local.set({ token: data.token });
-
-//             const loginElement = document.getElementById('login');
-//             const trackerElement = document.getElementById('tracker');
-
-//             if (loginElement && trackerElement) {
-//                 loginElement.style.display = 'none';
-//                 trackerElement.style.display = 'block';
-//             } else {
-//                 console.error('Login or tracker element not found.');
-//             }
-//         } else {
-//             alert('Login failed');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error logging in:', error);
-//         alert('Login failed');
-//     });
-// });
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     chrome.storage.local.get('token', (data) => {
-//         if (data.token) {
-//             document.getElementById('login').style.display = 'none';
-//             document.getElementById('tracker').style.display = 'block';
-//         } else {
-//             document.getElementById('login').style.display = 'block';
-//             document.getElementById('tracker').style.display = 'none';
-//         }
-//     });
-// });
-
-// document.getElementById('registerBtn').addEventListener('click', () => {
-//     const username = document.getElementById('regUsername').value;
-//     const password = document.getElementById('regPassword').value;
-
-//     fetch('http://localhost:5000/api/auth/register', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ username, password })
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         if (data.message === 'User registered successfully') {
-//             document.getElementById('register').style.display = 'none';
-//             document.getElementById('login').style.display = 'block';
-//         } else {
-//             alert('Registration failed');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error registering:', error);
-//         alert('Registration failed');
-//     });
-// });
-
-// document.getElementById('showRegister').addEventListener('click', () => {
-//     document.getElementById('login').style.display = 'none';
-//     document.getElementById('register').style.display = 'block';
-// });
-
-// document.getElementById('showLogin').addEventListener('click', () => {
-//     document.getElementById('register').style.display = 'none';
-//     document.getElementById('login').style.display = 'block';
-// });
-
-// document.getElementById('logoutBtn').addEventListener('click', () => {
-//     chrome.storage.local.remove('token', () => {
-//         document.getElementById('tracker').style.display = 'none';
-//         document.getElementById('login').style.display = 'block';
-//     });
-// });
-
-// // Start/Stop Listening
-// // document.getElementById('start').addEventListener('click', () => {
-// //     document.getElementById('status').textContent = 'Status: Listening...';
-// //     chrome.runtime.sendMessage({ action: 'startListening' });
-// // });
-
-// // document.getElementById('stop').addEventListener('click', () => {
-// //     document.getElementById('status').textContent = 'Status: Stopped';
-// //     chrome.runtime.sendMessage({ action: 'stopListening' });
-// // });
-
-// // let mediaRecorder;
-// // let audioChunks = [];
-
-// // // HTML elements
-// // // const startButton = document.getElementById('start');
-// // const stopButton = document.getElementById('stop');
-// // const statusText = document.getElementById('status');
-// // const audioList = document.getElementById('audio-list');
-
-// // // Start Recording
-// // document.getElementById('start').addEventListener('click', async () => {
-// //     try {
-// //         // Request microphone access
-// //         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-// //         mediaRecorder = new MediaRecorder(stream);
-
-// //         // Handle data availability event
-// //         mediaRecorder.ondataavailable = (event) => {
-// //             audioChunks.push(event.data);
-// //         };
-
-// //         // Handle the stop event
-// //         mediaRecorder.onstop = async () => {
-// //             const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-// //             audioChunks = []; // Reset for next recording
-
-// //             // Prepare form data for backend upload
-// //             const formData = new FormData();
-// //             formData.append('audio', audioBlob, 'recording.webm');
-
-// //             try {
-// //                 const response = await fetch('http://localhost:5000/api/audio/upload', {
-// //                     method: 'POST',
-// //                     body: formData,
-// //                 });
-
-// //                 if (!response.ok) {
-// //                     throw new Error(`Server error: ${response.status}`);
-// //                 }
-
-// //                 const data = await response.json();
-// //                 console.log('Audio uploaded successfully:', data);
-// //                 alert('Audio uploaded successfully!');
-// //             } catch (err) {
-// //                 console.error('Error uploading audio:', err);
-// //                 alert('Failed to upload audio. Please try again.');
-// //             }
-// //         };
-
-// //         // Start the recording
-// //         mediaRecorder.start();
-// //         document.getElementById('status').textContent = 'Recording...';
-// //         document.getElementById('start').disabled = true;
-// //         document.getElementById('stop').disabled = false;
-// //     } catch (error) {
-// //         console.error('Error accessing microphone:', error);
-// //         alert('Microphone access is required for recording. Please check your browser settings.');
-// //     }
-// // });
-
-// // // Stop Listening
-// // // Stop Listening
-// // stopButton.addEventListener('click', () => {
-// //     mediaRecorder.stop();
-
-// //     mediaRecorder.onstop = () => {
-// //         // Create a Blob from the recorded chunks
-// //         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-// //         const formData = new FormData();
-
-// //         // Attach the audio blob
-// //         formData.append('audio', audioBlob, 'recording.webm');
-
-// //         // Send to backend
-// //         fetch('http://localhost:5000/api/audio/upload', {
-// //             method: 'POST',
-// //             body: formData,
-// //         })
-// //         .then(response => response.json())
-// //         .then(data => {
-// //             console.log('Audio uploaded successfully:', data);
-// //         })
-// //         .catch(error => {
-// //             console.error('Error uploading audio:', error);
-// //         });
-
-// //         // Reset state
-// //         audioChunks = [];
-// //         statusText.textContent = 'Status: Idle';
-// //         startButton.disabled = false;
-// //         stopButton.disabled = true;
-// //     };
-// // });
-
-// document.getElementById('start').addEventListener('click', () => {
-//     chrome.runtime.sendMessage({ action: 'startListening' }, (response) => {
-//         if (response.status === 'Recording started') {
-//             document.getElementById('status').textContent = 'Status: Recording...';
-//             document.getElementById('start').disabled = true;
-//             document.getElementById('stop').disabled = false;
-//         }
-//     });
-// });
-
-// document.getElementById('stop').addEventListener('click', () => {
-//     chrome.runtime.sendMessage({ action: 'stopListening' }, (response) => {
-//         if (response.status === 'Recording stopped') {
-//             document.getElementById('status').textContent = 'Status: Stopped';
-//             document.getElementById('start').disabled = false;
-//             document.getElementById('stop').disabled = true;
-//         }
-//     });
-// });
-
 let mediaRecorder;
 let audioChunks = [];
+// Authentication State Management
+let currentUser = null;
+// let authToken = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check authentication status on load
@@ -396,3 +174,174 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+const trackerSection = document.getElementById('tracker');
+const audioRecordingsSection = document.getElementById('audioRecordings');
+const audioDetailsSection = document.getElementById('audioDetails');
+const recordingsList = document.getElementById('recordingsList');
+const audioPlayer = document.getElementById('audioPlayer');
+// const summaryContent = document.getElementById('summaryContent')
+
+
+// Event Listeners for Navigation
+document.getElementById('viewAudios').addEventListener('click', fetchUserRecordings);
+document.getElementById('backToTracker').addEventListener('click', () => {
+    audioRecordingsSection.style.display = 'none';
+    trackerSection.style.display = 'block';
+});
+document.getElementById('backToRecordings').addEventListener('click', () => {
+    audioDetailsSection.style.display = 'none';
+    audioRecordingsSection.style.display = 'block';
+});
+// document.getElementById('summarizeBtn').addEventListener('click', summarizeAudio);
+
+
+async function fetchUserRecordings() {
+    try {
+        // Retrieve token from Chrome storage
+        const authToken = await new Promise((resolve, reject) => {
+            chrome.storage.local.get(['token'], (result) => {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError);
+                } else {
+                    resolve(result.token);
+                }
+            });
+        });
+
+        if (!authToken) {
+            alert('No auth token found. Please log in.');
+            return;
+        }
+
+        // Fetch user recordings
+        const response = await fetch('http://localhost:5000/api/audio/recordings', {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch recordings');
+        }
+
+        const recordingsResponse = await response.json();
+        console.log('API Response:', recordingsResponse);
+
+        // Extract the recordings array from the response
+        const recordings = recordingsResponse.recordings;
+
+        if (!Array.isArray(recordings)) {
+            throw new Error('API response recordings field is not an array');
+        }
+
+        // Populate the recordings list
+        const recordingsList = document.getElementById('recordingsList');
+        recordingsList.innerHTML = ''; // Clear previous list
+        recordings.forEach((recording) => {
+            const recordingElement = document.createElement('div');
+            recordingElement.innerHTML = `
+                <div>
+                    <p>Recording: ${recording.originalName}</p>
+                    <button class="view-audio" data-id="${recording._id}">View Details</button>
+                </div>
+            `;
+            recordingsList.appendChild(recordingElement);
+        });
+
+        // Add event listeners to view audio buttons
+        recordingsList.querySelectorAll('.view-audio').forEach((btn) => {
+            btn.addEventListener('click', (e) => viewAudioDetails(e.target.dataset.id));
+        });
+
+        document.getElementById('tracker').style.display = 'none';
+        document.getElementById('audioRecordings').style.display = 'block';
+    } catch (error) {
+        console.error('Error fetching recordings:', error);
+        alert('Failed to fetch recordings');
+    }
+}
+
+//audio details
+
+async function viewAudioDetails(audioId) {
+    try {
+        const authToken = await new Promise((resolve, reject) => {
+            chrome.storage.local.get(['token'], (result) => {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError);
+                } else {
+                    resolve(result.token);
+                }
+            });
+        });
+
+        if (!authToken) {
+            alert('No auth token found. Please log in.');
+            return;
+        }
+
+        // Fetch audio details by ID
+        const response = await fetch(`http://localhost:5000/api/audio/${audioId}`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch audio details');
+        }
+
+        const audioDetails = await response.json();
+        console.log('Audio Details:', audioDetails);
+
+        // Set audio player source
+        const audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.src = `http://localhost:5000/uploads/${audioDetails.user.id}/${audioDetails.filename}`; // Adjust path to use the user id
+        audioPlayer.load();
+
+        // Show audio details section
+        document.getElementById('audioRecordings').style.display = 'none';
+        document.getElementById('audioDetails').style.display = 'block';
+    } catch (error) {
+        console.error('Error fetching audio details:', error);
+        alert('Failed to fetch audio details');
+    }
+}
+
+//
+// async function viewAudioDetails(audioId) {
+//     try {
+
+//         // Retrieve token from Chrome storage
+//         const authToken = await new Promise((resolve, reject) => {
+//             chrome.storage.local.get(['token'], (result) => {
+//                 if (chrome.runtime.lastError) {
+//                     reject(chrome.runtime.lastError);
+//                 } else {
+//                     resolve(result.token);
+//                 }
+//             });
+//         });
+
+//         if (!authToken) {
+//             alert('No auth token found. Please log in.');
+//             return;
+//         }
+
+//         const response = await fetch(`http://localhost:5000/api/audio/${audioId}`, {
+//             headers: {
+//                 'Authorization': `Bearer ${authToken}`
+//             }
+//         });
+//         const audioData = await response.json();
+
+//         audioPlayer.src = audioData.path;
+//         audioPlayer.style.display = 'block';
+
+//         audioRecordingsSection.style.display = 'none';
+//         audioDetailsSection.style.display = 'block';
+//     } catch (error) {
+//         console.error('Error fetching audio details:', error);
+//         alert('Failed to load audio details');
+//     }
+// }
