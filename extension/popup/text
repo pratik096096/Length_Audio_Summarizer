@@ -1,6 +1,6 @@
 // // Configuration
 // const BASE_URL = 'http://localhost:5000/api'; // Your backend URL
-// const GEMINI_API_KEY = 'AIzaSyC1HcH5MF2F8L10nmpBH2f6hYwb1ME8FL8';
+// const GEMINI_API_KEY = ''
 
 // // Authentication State Management
 // let currentUser = null;
