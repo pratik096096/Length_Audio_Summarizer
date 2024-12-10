@@ -150,45 +150,80 @@ router.get('/recordings', authMiddleware, async (req, res) => {
     });
   }
 });
+////
+
+// const mongoose = require('mongoose');
+// router.get('/:id', authMiddleware, async (req, res) => {
+//   try {
+//     const audioId = req.params.id;
+
+//     // Validate if the id is a valid MongoDB ObjectId
+//     if (!mongoose.Types.ObjectId.isValid(audioId)) {
+//       return res.status(400).json({ message: 'Invalid audio ID' });
+//     }
+
+//     const userId = req.user._id;
+
+//     const audioRecording = await AudioRecording.findOne({
+//       _id: audioId,
+//       user: userId
+//     }).select('-path'); // Exclude file path for security
+
+//     if (!audioRecording) {
+//       return res.status(404).json({ message: 'Audio recording not found' });
+//     }
+
+//     res.json(audioRecording);
+//   } catch (error) {
+//     console.error('Fetch audio details error:', {
+//       message: error.message,
+//       stack: error.stack,
+//       userId,
+//       audioId
+//     });
+//     res.status(500).json({ 
+//       message: 'Server error fetching audio details',
+//       error: error.message 
+//     });
+//   }
+// });
+
+//
 
 
-const mongoose = require('mongoose');
+//audio get by id
+
 
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const audioId = req.params.id;
-
-    // Validate if the id is a valid MongoDB ObjectId
-    if (!mongoose.Types.ObjectId.isValid(audioId)) {
-      return res.status(400).json({ message: 'Invalid audio ID' });
-    }
-
     const userId = req.user._id;
 
     const audioRecording = await AudioRecording.findOne({
       _id: audioId,
       user: userId
-    }).select('-path'); // Exclude file path for security
+    }).select('-path');
 
     if (!audioRecording) {
       return res.status(404).json({ message: 'Audio recording not found' });
     }
 
-    res.json(audioRecording);
-  } catch (error) {
-    console.error('Fetch audio details error:', {
-      message: error.message,
-      stack: error.stack,
-      userId,
-      audioId
+    // Ensure you're sending a predictable object structure
+    res.json({
+      _id: audioRecording._id,
+      userId: userId.toString(), // Ensure it's a string
+      filename: audioRecording.filename,
+      originalName: audioRecording.originalName,
+      mimetype: audioRecording.mimetype
     });
+  } catch (error) {
+    console.error('Fetch audio details error:', error);
     res.status(500).json({ 
       message: 'Server error fetching audio details',
       error: error.message 
     });
   }
 });
-
 
 
 

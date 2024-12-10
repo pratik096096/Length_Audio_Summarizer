@@ -286,62 +286,38 @@ async function viewAudioDetails(audioId) {
                 'Authorization': `Bearer ${authToken}`
             }
         });
+        
 
         if (!response.ok) {
             throw new Error('Failed to fetch audio details');
         }
 
         const audioDetails = await response.json();
-        console.log('Audio Details:', audioDetails);
+        const userId = audioDetails.userId;
+        const filename = audioDetails.filename;
 
-        // Set audio player source
+        const audioUrl = `http://localhost:5000/uploads/${userId}/${filename}`;
+        console.log('Audio URL:', audioUrl);
+
+        // Check if the audio file exists
+        const fileCheck = await fetch(audioUrl, { method: 'HEAD' });
+        if (!fileCheck.ok) {
+            throw new Error(`Audio file not found: ${audioUrl}`);
+        }
+
         const audioPlayer = document.getElementById('audioPlayer');
-        audioPlayer.src = `http://localhost:5000/uploads/${audioDetails.user.id}/${audioDetails.filename}`; // Adjust path to use the user id
+        audioPlayer.src = audioUrl;
         audioPlayer.load();
 
         // Show audio details section
         document.getElementById('audioRecordings').style.display = 'none';
         document.getElementById('audioDetails').style.display = 'block';
+
+        console.log('Audio loaded successfully');
     } catch (error) {
-        console.error('Error fetching audio details:', error);
-        alert('Failed to fetch audio details');
+        console.error('Error fetching or playing audio:', error);
+        alert(`Failed to fetch or play audio: ${error.message}`);
     }
+    
 }
 
-//
-// async function viewAudioDetails(audioId) {
-//     try {
-
-//         // Retrieve token from Chrome storage
-//         const authToken = await new Promise((resolve, reject) => {
-//             chrome.storage.local.get(['token'], (result) => {
-//                 if (chrome.runtime.lastError) {
-//                     reject(chrome.runtime.lastError);
-//                 } else {
-//                     resolve(result.token);
-//                 }
-//             });
-//         });
-
-//         if (!authToken) {
-//             alert('No auth token found. Please log in.');
-//             return;
-//         }
-
-//         const response = await fetch(`http://localhost:5000/api/audio/${audioId}`, {
-//             headers: {
-//                 'Authorization': `Bearer ${authToken}`
-//             }
-//         });
-//         const audioData = await response.json();
-
-//         audioPlayer.src = audioData.path;
-//         audioPlayer.style.display = 'block';
-
-//         audioRecordingsSection.style.display = 'none';
-//         audioDetailsSection.style.display = 'block';
-//     } catch (error) {
-//         console.error('Error fetching audio details:', error);
-//         alert('Failed to load audio details');
-//     }
-// }
